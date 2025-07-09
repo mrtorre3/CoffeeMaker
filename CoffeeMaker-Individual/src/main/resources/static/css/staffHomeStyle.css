@@ -1,0 +1,33 @@
+body {
+    background-color: rgb(220, 190, 150);
+    font-family: Arial;
+}
+
+li {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration-line: none;
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14pt;
+    margin-top: 15px;
+}
+
+button {
+	background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14pt;
+    margin-top: 15px;
+    margin-left: 40px;
+}
+
+button:hover {
+	cursor: pointer;
+}

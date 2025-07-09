@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Recipe</title>
+    <link rel="stylesheet" href="css/addrecipestyle.css">
+</head>
+<body>
+	<script	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+	<script>
+		/*<![CDATA[*/ 
+			
+		var app = angular.module('myApp', []);
+		app.controller('addRecipeCtrl', function($scope, $http, $q) {
+			
+			$scope.selectedIngredients = [];
+			$scope.ingredientAmounts = [];
+			
+			function updateIngredients() {
+				
+				$http.get("/api/v1/inventory").then(function(response) {
+					console.log(response.data['ingredients']);
+					$scope.ingredients = response.data['ingredients'];
+				});
+				
+			}
+			
+			
+			$scope.reset = function() {
+				$scope.recipe = {
+					name : '',
+					price : '',
+					customIngredients : [],
+				};
+				if (undefined != $scope.addRecipeForm) {
+					$scope.addRecipeForm.$setPristine(); // reset Form
+				}
+			}
+			
+			function updateRecipe() {
+				//set customIngredients to whatever is in Ingredients for now for proof of concept
+				//$scope.recipe.customIngredients = $scope.ingredients;
+				let ingredientIndex = 0;
+				for (let i = 0; i < $scope.selectedIngredients.length; i++) {
+					if ($scope.selectedIngredients[i] === true) {
+						$scope.recipe.customIngredients[ingredientIndex] = {
+								name: $scope.ingredients[i]['name'],
+								amount: $scope.ingredientAmounts[i] != undefined ? $scope.ingredientAmounts[i] : 0
+						};
+						ingredientIndex++;
+					}
+				}
+			}
+      
+			$scope.submit = function() {
+				updateRecipe()
+				console.log($scope.recipe)
+				$http.post("/api/v1/recipes", $scope.recipe).then(
+					function(success) {
+						alert("Recipe " + $scope.recipe.name + " added to coffeeMaker!");
+						$scope.success = true;
+						$scope.failure = false;
+					}, function(rejection) {
+						alert(rejection.data.message);
+					});
+				
+
+			}
+			
+			$scope.reset();
+			updateIngredients();
+			
+		});
+			
+		/*]]>*/
+	</script>
+	
+	
+		<div ng-app="myApp" ng-controller="addRecipeCtrl">
+			<form ng-submit="submit()" name="addRecipeForm"	class="form-horizontal">
+			
+			    <div id="top-half">
+			        <div>
+			            <h1>CoffeeMaker</h1>
+			            <h2>Add a Recipe</h2>
+			            
+			            
+			            <div class="text-field">
+			                <h2 class="black-box" id="recipe-name">Recipe name:</h2>
+			                <input type="text" ng-model="recipe.name" name="name"
+									class="name form-control input-sm"
+									placeholder="Enter recipe name" required="0" />
+							<div class="has-error" ng-show="addRecipeForm.$dirty">
+									<span ng-show="addRecipeForm.name.$error.required"></span> <span
+										ng-show="addRecipeForm.name.$invalid"></span>
+							</div>
+			            </div>
+			            
+			            
+			            <div class="text-field">
+			                <h2 class="black-box" id="price-name">Price:</h2>
+			                <input type="text" ng-model="recipe.price" name="price"
+									class="price form-control input-sm"
+									placeholder="Enter recipe price" required="0" />
+							<div class="has-error" ng-show="addRecipeForm.$dirty">
+									<span ng-show="addRecipeForm.price.$error.required"></span> <span
+										ng-show="addRecipeForm.price.$invalid"></span>
+							</div>
+			            </div>
+			            
+			            
+			            <h2 class="black-box" id="select-ingredients">Select Ingredients:</h2>
+			        </div>
+			        <button class="submit-button">SUBMIT</button>
+			    </div>
+			
+		    <!-- section that begins the griddening -->
+		    
+			    <div id="ingredient-grid">
+			        <div ng-repeat="ingredient in ingredients track by $index" class="ingredient">
+			            <p class="ingredient-name">{{ingredient.name}}</p>
+			            <div class="unit-box">
+			                <input ng-model="$parent.selectedIngredients[$index]" class="unit-check" type="checkbox">
+			                <div class="hidden-unit">
+			                    <p class="unit-display">Units:</p>
+			                    <input ng-model="$parent.ingredientAmounts[$index]" class="unit-text" type="number">
+			                </div>
+			            </div>
+			        </div>
+		    </div>
+		</form>    
+	</div>
+	<a href="/index" id="menu-button">Return to Menu</a>
+</body>
+</html>

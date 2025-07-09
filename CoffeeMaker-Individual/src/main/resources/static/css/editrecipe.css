@@ -1,0 +1,164 @@
+body {
+    background-color: rgb(220, 190, 150);
+    font-family: Arial;
+}
+
+.black-box {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-style: border-box;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: normal;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.recipe-list {
+    margin-left: -20px;
+    opacity: 0;
+    margin-bottom: 10px;
+}
+
+input.recipe-list:checked + label.recipe-item {
+    background-color: rgb(80, 35, 0);
+    border: 2px solid rgb(80, 35, 0);
+    color: white; 
+}
+
+.recipe-item {
+    font-size: 14pt;
+    text-wrap: nowrap;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.recipe-item:hover {
+    cursor: pointer;
+    border: 2px solid rgba(80, 35, 0, 75%);
+}
+
+.submit-button {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    width: 100px;
+    height: 40px;
+    font-size: 14pt;
+    margin-top: 15px;
+}
+
+.submit-button:active {
+    background-color:rgb(120, 75, 40)
+}
+
+.recipe-info-grid {
+    display: flex;
+}
+
+.recipe-info-item {
+    margin: 15px;
+}
+
+#recipes {
+    margin-left: 0;
+}
+
+#price-box {
+    width: 50px;
+    border: 2px solid rgb(80, 35, 0);
+    margin-top: 10px;
+}
+
+#price-name {
+    width: 56px;
+}
+
+#price-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ingredient-unit {
+    display: flex;
+    align-items: center;
+}
+
+.ingredient-input {
+    width: 50px;
+    border: 2px solid rgb(80, 35, 0);
+    margin-left: auto;
+}
+
+.small-ingredient-name {
+    margin-right: 5px;
+    font-size: 14pt;
+}
+
+.remove-button {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    width: 90px;
+    font-size: 14pt;
+    margin-left: 5px;
+}
+
+.remove-button:active {
+    background-color:rgb(120, 75, 40)
+}
+
+.ingredient-select {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.large-ingredient-name {
+    font-size: 18pt;
+    margin-right: auto;
+}
+
+.add-button {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    width: 90px;
+    font-size: 14pt;
+}
+
+.add-button:active {
+    background-color:rgb(120, 75, 40)
+}
+
+#bottom-half {
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    width: 240px;
+}
+
+#menu-button {
+    background-color: rgb(80, 35, 0);
+    border-style: border-box;
+    border-radius: 5px;
+    font-weight: normal;
+    height: 30px;
+    padding: 0px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+#menu-button:hover {
+    cursor: pointer;
+}
+
+#menu-button a {
+    color: white;
+    text-decoration-line: none;
+    padding: 15px;
+    font-size: 14pt;
+}

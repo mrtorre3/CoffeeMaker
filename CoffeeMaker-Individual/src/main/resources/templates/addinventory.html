@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Inventory</title>
+    <link rel="stylesheet" href="css/addinventory.css">
+</head>
+<body>
+	<script	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+	<script>
+		/*<![CDATA[*/ 
+			
+		var app = angular.module('myApp', []);
+		app.controller('addInventoryController', function($scope, $http, $q) {
+
+			$scope.ingredientAmounts = [];
+			
+			function updateIngredients() {
+				
+				$http.get("/api/v1/inventory").then(function(response) {
+					$scope.ingredients = response.data['ingredients'];
+				});
+				
+			}
+			
+			
+			$scope.reset = function() {
+				$scope.inventory = {
+					customIngredients : [],
+				};
+				if (undefined != $scope.addInventoryForm) {
+					$scope.addInventoryForm.$setPristine(); // reset Form
+				}
+			}
+			
+			function updateInventory() {
+				for (let i = 0; i < $scope.ingredients.length; i++) {
+					$scope.inventory.customIngredients[i] = {
+							name: $scope.ingredients[i]['name'],
+							amount: $scope.ingredientAmounts[i] != undefined ? $scope.ingredientAmounts[i] : 0
+					};
+				}
+			}
+      
+			$scope.submit = function() {
+				updateInventory()
+				console.log($scope.inventory)
+				$http.put("/api/v1/inventory", $scope.inventory).then(
+					function(success) {
+						$scope.success = true;
+						$scope.failure = false;
+						$scope.reset();
+						updateIngredients();
+						location.reload();
+					}, function(rejection) {
+						alert(rejection.data.message);
+					});
+				
+
+			}
+			
+			$scope.reset();
+			updateIngredients();
+			
+		});
+			
+		/*]]>*/
+	</script>
+    <h1 id="web-title">CoffeeMaker</h1>
+    <div ng-app="myApp" ng-controller="addInventoryController">
+	    <form ng-submit="submit()" name="addInventoryForm">
+		    <main>
+		        <section id="ingredients">
+		            <h2 id="ingredients-title" class="black-box">Ingredients</h2>
+		            <div class="ingredient" ng-repeat="ingredient in ingredients track by $index">
+		            	<p class="ingredient-name">{{ingredient.name}}</p>
+		            	<p class="ingredient-amount">{{ingredient.amount}}</p>
+		            </div>
+		        </section>
+		        <section id="add-ingredients">
+		            <h2 id="add-ingredients-title" class="black-box">Add Ingredients</h2>
+		            <div class="ingredient-add" ng-repeat="ingredient in ingredients track by $index">
+		            	<p class="ingredient-name">{{ingredient.name}}</p>
+		            	<input type="text" class="ingredient-input" ng-model="$parent.ingredientAmounts[$index]">
+		            </div>
+		        </section>
+		    </main>
+		    <button class="submit-button">SUBMIT</button>
+		</form>
+	</div>
+    <button id="menu-button"><a href="/index">Return to Menu</a></button>
+</body>
+</html>

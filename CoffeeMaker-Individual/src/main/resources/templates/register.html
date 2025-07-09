@@ -1,0 +1,154 @@
+<html xmlns:th="http://www.thymeleaf.org"
+lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+		body {
+			background-color: rgb(220, 190, 150);
+			font-family: Arial;
+		}
+
+		#content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.form-control {
+			height: 20px;
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+
+		.submit-button {
+			margin-left: 50px;
+			margin-bottom: 10px;
+			margin-top:10px;
+			background-color: rgb(80, 35, 0);
+			color: white;
+			border-radius: 5px;
+			width: 150px;
+			height: 30px;
+			font-size: 14pt;
+		}
+			
+		.btn-primary:active {
+			background-color:rgb(120, 75, 40)
+		}
+
+		#title {
+			font-weight: bold;
+			margin: 0;
+			padding: 0;
+		}
+
+		a {
+			text-decoration-line: none;
+			color: white;
+		}
+
+		#return-button {
+			position: absolute;
+			right: 5px;
+			bottom: 5px;
+		}
+	</style>
+</head>
+<body>
+	<script	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+	
+	<script>
+		/*<![CDATA[*/
+		var app = angular.module('myApp', []);
+		app.controller('registerCtrl', function($scope, $http, $window) {
+
+			$scope.roles = [
+				{value: 'Customer', display: 'Customer'},
+				{value: 'InventoryManager', display: 'InventoryManager'},
+				{value: 'Staff', display: 'Staff'}
+			];
+			$scope.role = {};
+			$scope.user = {
+				username : '',
+				password : '',
+				role : '',
+			};
+			
+			$scope.addUser = function() {
+				$scope.success = false;
+				$scope.failure = false;
+
+				$scope.user.role = $scope.role.value;
+
+				$http.post("/api/v1/users", $scope.user).then(
+						function(response) {
+			                $window.location.href = '/login';
+						}, function(rejection) {
+							$scope.failure = true;
+							$scope.success = false;
+							alert("Error while creating user!");
+						});
+				$scope.success = !($scope.failure);
+			}
+
+			$scope.submit = function() {
+				$scope.addUser();
+				$scope.reset();
+			}
+
+			$scope.reset = function() {
+				$scope.user = {
+					username : '',
+					password : '',
+					role : '',
+				};
+				if (undefined != $scope.addRecipeForm) {
+					$scope.usersform.$setPristine(); // reset Form
+				}
+			}
+
+			$scope.reset();
+
+		});
+		/*]]>*/
+	</script>
+	<div id="content" ng-app="myApp" ng-controller="registerCtrl">
+		<h1 id="title">Register</h1>
+		<form ng-submit="submit()" name="usersform" class="form-horizontal">
+		
+			<div class="form-group">
+				<label for="username">Username:</label> 
+				<input type="text" name="username"  ng-model="user.username"
+					class="name form-control input-sm" placeholder="Enter user name" required="0" />
+				<div class="has-error" ng-show="usersform.$dirty">
+						<span ng-show="usersform.name.$error.required"></span> <span
+							ng-show="usersform.name.$invalid"></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label> 
+				<input type="password" name="password"  ng-model="user.password"
+					class="password form-control input-sm" placeholder="Enter user password" required="0" />
+				<div class="has-error" ng-show="usersform.$dirty">
+						<span ng-show="usersform.password.$error.required"></span> <span
+							ng-show="usersform.password.$invalid"></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<p>Select a role:</p>
+				<select ng-model="role" ng-options="role as role.display for role in roles" required="true">
+					<option value="">Select a role</option>
+				</select>
+				<div class="has-error" ng-show="usersform.$dirty">
+						<span ng-show="usersform.password.$error.required"></span> <span
+							ng-show="usersform.password.$invalid"></span>
+				</div>
+			</div>
+			<button type="submit" class="submit-button">Register</button>
+		</form>
+		<button id="return-button" class="submit-button"><a id="register-link" href="/login">Return to Login</a></button>
+	</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+body {
+    background-color: rgb(220, 190, 150);
+    font-family: Arial;
+}
+
+.black-box {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-style: border-box;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: normal;
+    height: 30px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.text-box {
+    height: 20px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.text-field {
+    display: flex;
+}
+
+.submit-button {
+    margin-left: 30px;
+    margin-bottom: 100px;
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    width: 150px;
+    height: 30px;
+    font-size: 14pt;
+}
+
+.submit-button:active {
+    background-color:rgb(120, 75, 40)
+}
+
+#top-half {
+    display: flex;
+    align-items: center;
+}
+
+#ingredient-name {
+    width: 181px;
+}
+
+#menu-button {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background-color: rgb(80, 35, 0);
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    width: 200px;
+    font-size: 18pt;
+}
+
+#menu-button:active {
+    background-color:rgb(120, 75, 40)
+}

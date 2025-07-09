@@ -1,0 +1,111 @@
+body {
+    background-color: rgb(220, 190, 150);
+    font-family: Arial;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.black-box {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-style: border-box;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: normal;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#ingredients {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#add-ingredients {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ingredient {
+    display: flex;
+    font-size: 14pt;
+    height: 20px;
+    min-width: 150px;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid rgb(80, 35, 0);
+    border-radius: 5px;
+    padding: 2px;
+    margin-bottom: 3px;
+}
+
+.ingredient-name {
+	margin-right: 5px;
+}
+
+.ingredient-add {
+    display: flex;
+    font-size: 14pt;
+    height: 20px;
+    width: 170px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    padding: 2px;
+    margin-bottom: 15px;
+}
+
+.submit-button {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    width: 100px;
+    height: 40px;
+    font-size: 14pt;
+    margin-top: 15px;
+    position: absolute;
+    bottom: 20px;
+    left: 15px;
+}
+
+.submit-button:active {
+    background-color:rgb(120, 75, 40)
+}
+
+.ingredient-input {
+    width: 70px;
+    border: 2px solid rgb(80, 35, 0);
+    margin-left: auto;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#menu-button {
+    background-color: rgb(80, 35, 0);
+    border-style: border-box;
+    border-radius: 5px;
+    font-weight: normal;
+    height: 30px;
+    padding: 0px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+#menu-button:hover {
+    cursor: pointer;
+}
+
+#menu-button a {
+    color: white;
+    text-decoration-line: none;
+    padding: 15px;
+    font-size: 14pt;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="css/viewOrdersStaff.css">
+    
+    <title>View Orders</title>
+</head>
+<body>
+	<script	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+	<script>
+		/*<![CDATA[*/ 
+			
+		var app = angular.module('myApp', []);
+		app.controller('orderController', function($scope, $http, $q) {
+			
+            $scope.orders = [];
+			$scope.allOrders = [];
+			$scope.selectedOrder = "";
+            $scope.order = {};
+
+            // Retrieve the current list of orders from CoffeeMaker
+			function updateOrders() {
+				
+				$http.get("/api/v1/order").then(function(response) {
+					$scope.allOrders = response.data;
+					// Only add orders that have not been fulfilled
+					for(let i = 0; i < $scope.allOrders.length; i++) {
+						if (!$scope.allOrders[i].filled) {
+							$scope.orders.push($scope.allOrders[i]);
+						}
+					}
+				});
+
+
+				
+			}
+			
+			// Reset the stored list of orders
+			$scope.reset = function() {
+				$scope.orders = [];
+				$scope.allOrders = [];
+				$scope.selectedOrder = "";
+				$scope.order = {};
+			}
+
+            // Update the selected order id and $scope.order based on the order selected by the user
+			$scope.updateSelected = function() {
+				for (let i = 0; i < $scope.orders.length; i++) {
+					if ($scope.orders[i].id === +$scope.selectedOrder) {
+						$scope.order = $scope.orders[i];
+					}
+				}
+			}
+
+            // Triggers when the user clicks the fulfill button
+			$scope.fulfill = function() {
+				// No order is selected
+				if (!$scope.order.id) {
+					alert("Must select an order!");
+					return;
+				}
+
+				// Set order status to fulfilled and update the order in CoffeeMaker
+				$scope.order.filled = true;
+				$http.put("/api/v1/order/", $scope.order).then(
+					function(success) {
+						alert(success.data.message);  // Alert the user that the recipe has been fulfilled successfully
+						$scope.success = true;
+						$scope.failure = false;
+						$scope.reset();
+						updateOrders();
+					}, function(rejection) {
+						alert(rejection.data.message);
+						$scope.reset();
+						updateOrders();
+					});
+
+			}
+
+            $scope.reset();
+            updateOrders();
+
+		});
+			
+		/*]]>*/
+	</script>
+	
+	
+	<div id="pageTitle">
+        <h1>CoffeeMaker</h1>
+    </div>
+	<div id="orderComponent" ng-app="myApp" ng-controller="orderController">
+		<div id="orderLabel">Orders</div>
+        
+        <div id="orderContainer">
+            <div id="orderContainerHeading">
+                <div class="orderTextLeft">Drink</div>
+                <div class="orderTextRight">Customer</div>
+            </div>
+            <div class="order" ng-repeat="order in orders track by $index">
+                <input ng-click="updateSelected()" ng-model="$parent.selectedOrder" type="radio" id="order-{{order.id}}" class="order-list" name="order-radio" value="{{order.id}}">
+                <label class="order-item" for="order-{{order.id}}">
+                    <p>{{order.recipeName}}</p>
+                    <p>{{order.customerName}}</p>
+                </label>
+            </div>
+        </div>
+
+        <button id="fulfillButton" ng-click="fulfill()">Fulfill</button>
+	</div>
+	<button id="returnButton" ><a href="/index">Return</a></button>
+</body>
+</html>

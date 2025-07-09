@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Welcome to the CSC326 CoffeeMaker</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="css/staffHomeStyle.css">
+</head>
+<body>
+	<h1>Coffee Maker</h1>
+	<h2>Available Options</h2>
+	<ul>
+		<li><a href="addrecipe.html">Add a Recipe</a></li>
+		<li><a href="editrecipe.html">Edit Recipe</a></li>
+		<li><a href="deleterecipe.html">Delete Recipe</a></li>
+		<li><a href="/vieworders">View Orders</a></li>
+	</ul>
+	<form class="logout" th:action="@{/logout}" method="post">
+			<button class="btn btn-sm btn-primary" type="submit" id="logout">Log Out</button>
+	</form>
+</body>
+</html>

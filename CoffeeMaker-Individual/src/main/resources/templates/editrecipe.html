@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Recipe</title>
+    <link rel="stylesheet" href="css/editrecipe.css">
+</head>
+<body>
+	<script	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+	<script>
+		/*<![CDATA[*/ 
+			
+		var app = angular.module('myApp', []);
+		app.controller('editRecipeController', function($scope, $http, $q) {
+			
+			$scope.ingredientAmounts = [];
+			$scope.recipes = [];
+			$scope.selectedRecipe = "";
+			$scope.recipeIngredients = [];
+			
+			function updateIngredients() {
+				
+				$http.get("/api/v1/inventory").then(function(response) {
+					$scope.ingredients = response.data['ingredients'];
+				});
+				
+				$http.get("/api/v1/recipes").then(function(response) {
+					$scope.recipes = response.data;
+				});
+				
+			}
+			
+			
+			$scope.reset = function() {
+				$scope.ingredientAmounts = [];
+				$scope.recipes = [];
+				$scope.selectedRecipe = "";
+				$scope.recipeIngredients = [];
+				$scope.recipe = {
+					name : '',
+					price : '',
+					customIngredients : [],
+				};
+				if (undefined != $scope.editRecipeForm) {
+					$scope.editRecipeForm.$setPristine(); // reset Form
+				}
+			}
+			
+			function updateRecipe() {
+				$scope.recipe.customIngredients = [];
+				let ingredientIndex = 0;
+				for (let i = 0; i < $scope.recipeIngredients.length; i++) {
+					if ($scope.recipeIngredients[i] !== null) {
+						$scope.recipe.customIngredients[ingredientIndex] = {
+								name: $scope.recipeIngredients[i]['name'],
+								amount: $scope.ingredientAmounts[i] != undefined && $scope.ingredientAmounts[i] !== "" ? $scope.ingredientAmounts[i] : 0
+						};
+						ingredientIndex++;
+					}
+				}
+			}
+			
+			$scope.addIngredient = function(ingr) {
+				if ($scope.selectedRecipe === "") {
+					alert("Must select a recipe!");
+					return;
+				}
+				let found = false;
+				for (let i = 0; i < $scope.recipeIngredients.length; i++) {
+					if ($scope.recipeIngredients[i]['name'] === ingr) {
+						found = true;
+					}
+				}
+				if (!found) {
+					$scope.recipeIngredients[$scope.recipeIngredients.length] = {
+							name: ingr,
+							amount: 1
+					};
+					$scope.ingredientAmounts[$scope.ingredientAmounts.length] = 1;
+				}
+			}
+			
+			$scope.removeIngredient = function(ingr) {
+				if ($scope.selectedRecipe === "") {
+					alert("Must select a recipe!");
+					return;
+				}
+				for (let i = 0; i < $scope.recipeIngredients.length; i++) {
+					if ($scope.recipeIngredients[i]['name'] === ingr) {
+						$scope.recipeIngredients[i] = null;
+						$scope.ingredientAmounts[i] = null;
+					}
+				}
+				$scope.recipeIngredients = $scope.recipeIngredients.filter(element => {
+					return element !== null;
+				});
+				$scope.ingredientAmounts = $scope.ingredientAmounts.filter(element => {
+					return element !== null;
+				});
+			}
+			
+			$scope.updateSelected = function() {
+				$scope.ingredientAmounts = [];
+				for (let i = 0; i < $scope.recipes.length; i++) {
+					if ($scope.recipes[i]['name'] === $scope.selectedRecipe) {
+						$scope.recipe = $scope.recipes[i];
+						$http.get("/api/v1/recipes/" + $scope.recipe.name).then(function(response) {
+							$scope.recipeIngredients = response.data['ingredients'];
+							for (let j = 0; j < $scope.recipeIngredients.length; j++) {
+								$scope.ingredientAmounts[j] = $scope.recipeIngredients[j]['amount'];
+							}
+						});
+					}
+				}
+			}
+      
+			$scope.submit = function() {
+				if ($scope.selectedRecipe === "") {
+					alert("Must select a recipe!");
+					return;
+				}
+				updateRecipe();
+				console.log($scope.recipe);
+				$http.put("/api/v1/recipes/" + $scope.recipe.name, $scope.recipe).then(
+					function(success) {
+						alert("Recipe " + $scope.recipe.name + " successfully edited!");
+						$scope.success = true;
+						$scope.failure = false;
+					}, function(rejection) {
+						alert(rejection.data.message);
+					});
+				$scope.reset();
+				updateIngredients();
+
+			}
+			
+			$scope.reset();
+			updateIngredients();
+			
+		});
+			
+		/*]]>*/
+	</script>
+	<div ng-app="myApp" ng-controller="editRecipeController">
+		<form ng-submit="submit()" name="editRecipeForm">
+		    <div id="top-half">
+		        <h1>CoffeeMaker</h1>
+		        <div class="recipe-info-grid">
+		            <div id="recipes" class="recipe-info-item">
+		                <h2 class="black-box">Recipes</h2>
+		                <div class="recipe" ng-repeat="recipe in recipes track by $index">
+		                	<input ng-click="updateSelected()" ng-model="$parent.selectedRecipe" type="radio" id="{{recipe.name}}" class="recipe-list" name="recipe-radio" value="{{recipe.name}}">
+		                	<label class="recipe-item" for="{{recipe.name}}">{{recipe.name}}</label>
+		                </div>
+		            </div>
+		            <div id="price-item" class="recipe-info-item">
+		                <h2 class="black-box" id="price-name">Price</h2>
+		                <input id="price-box" type="text" ng-model="recipe.price" value="recipe.price">
+		                <button class="submit-button">SUBMIT</button>
+		            </div>
+		            <div class="recipe-info-item">
+		                <h2 class="black-box">Ingredients</h2>
+		                <div class="ingredient-unit" ng-repeat="ingredient in recipeIngredients track by $index">
+		                	<p class="small-ingredient-name">{{ingredient.name}}</p>
+		                	<input class="ingredient-input" ng-model="$parent.ingredientAmounts[$index]" value="$parent.ingredientAmounts[$index]">
+		                	<button class="remove-button" ng-click="removeIngredient(ingredient.name)" type="button">Remove</button>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		    <div id="bottom-half">
+		        <h2 class="black-box" id="select-ingredients">Available Ingredients</h2>
+		        <div class="ingredient-select" ng-repeat="ingredient in ingredients track by $index">
+		            <p class="large-ingredient-name">{{ingredient.name}}</p>
+		            <button ng-click="addIngredient(ingredient.name)" type="button" class="add-button">Add</button>
+		        </div>
+		        </div>
+		    </div>
+		</form>
+	</div>
+    <button id="menu-button"><a href="/index">Return to Menu</a></button>
+</body>
+</html>

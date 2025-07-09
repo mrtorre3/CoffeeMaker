@@ -1,0 +1,137 @@
+body {
+    background-color: rgb(220, 190, 150);
+    font-family: Arial;
+}
+
+.black-box {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-style: border-box;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: normal;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.text-box {
+    height: 20px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.text-field {
+    display: flex;
+}
+
+#select-ingredients {
+    width: 200px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#ingredient-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    width: 792px;
+    margin-left: 40px;
+}
+
+.ingredient {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.ingredient-image {
+    width: 150px;
+    border-radius: 150px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.unit-box {
+    display: flex;
+    width: 150px;
+    justify-content: center;
+}
+
+.unit-display {
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-style: border-box;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: normal;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.unit-text {
+    height: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 50px;
+}
+
+.hidden-unit {
+    display: none;
+}
+
+.unit-box .unit-check:checked + .hidden-unit{
+    display: flex;
+}
+
+.submit-button {
+    margin-left: 30px;
+    margin-bottom: 100px;
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    width: 150px;
+    height: 30px;
+    font-size: 14pt;
+}
+
+.submit-button:active {
+    background-color:rgb(120, 75, 40)
+}
+
+#top-half {
+    display: flex;
+    align-items: center;
+}
+
+#recipe-name {
+    width: 149px;
+}
+
+.ingredient-name {
+    background-color: rgb(80, 35, 0);
+    border-radius: 500px;
+    width: 150px;
+    padding: 5px;
+    padding-top: 65px;
+    padding-bottom: 65px;
+    text-align: center;
+    align-content: center;
+    margin-bottom: 10px;
+    font-size: 18pt;
+    color: white;
+}
+
+#menu-button {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background-color: rgb(80, 35, 0);
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    width: 200px;
+    font-size: 18pt;
+}

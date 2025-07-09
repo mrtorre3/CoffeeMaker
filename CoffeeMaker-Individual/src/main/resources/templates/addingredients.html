@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Ingredients</title>
+    <link rel="stylesheet" href="css/addingredientstyle.css">
+</head>
+<body>
+	<script	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+	<script>
+		/*<![CDATA[*/ 
+			
+		var app = angular.module('myApp', []);
+		app.controller('addIngredientCtrl', function($scope, $http, $q) {
+
+
+			
+			function updateRecipe() {
+				$scope.recipe.customIngredients = $scope.ingredients;
+			}
+			
+			$scope.reset = function() {
+				$scope.ingredient = {
+					name : '',
+					amount : 0
+				};
+				if (undefined != $scope.addIngredientForm) {
+					$scope.addIngredientForm.$setPristine(); // reset Form
+				}
+			}
+			
+			$scope.submit = function() {				
+				if($scope.ingredient.amount != null && Number.isInteger($scope.ingredient.amount)) {
+					$http.post("/api/v1/inventory", $scope.ingredient).then(
+						function(success) {
+							alert("Ingredient " + $scope.ingredient.name + " added to inventory!");
+							$scope.success = true;
+							$scope.failure = false;
+						}, function(rejection) {
+							alert("Please enter positive integers into the amount field");
+						})
+				} else {
+					alert("Please enter positive integers into the amount field");
+				}
+			}
+			
+			$scope.reset();
+			
+		});
+			
+		/*]]>*/
+	</script>
+	<div ng-app="myApp" ng-controller="addIngredientCtrl">
+		<form ng-submit="submit()" name="addIngredientForm"	class="form-horizontal">
+		
+		    <div id="top-half">
+		        <div>
+		            <h1>CoffeeMaker</h1>
+		            <h2>Add Ingredient</h2>
+		            
+		            
+		            <div class="text-field">
+		                <h2 class="black-box" id="recipe-name">Ingredient name:</h2>
+		                <input type="text" ng-model="ingredient.name" name="name"
+								class="name form-control input-sm"
+								placeholder="Enter ingredient name" required="0" />
+						<div class="has-error" ng-show="addIngredientForm.$dirty">
+								<span ng-show="addIngredientForm.name.$error.required"></span> <span
+									ng-show="addIngredientForm.name.$invalid"></span>
+						</div>
+		            </div>
+		            
+		            
+		            <div class="text-field">
+		                <h2 class="black-box" id="amount-name">Amount:</h2>
+		                <input type="number" ng-model="ingredient.amount" name="amount"
+								class="amount form-control input-sm"
+								placeholder="Enter ingredient amount" required="0" />
+						<div class="has-error" ng-show="addIngredientForm.$dirty">
+								<span ng-show="addIngredientForm.price.$error.required"></span> <span
+									ng-show="addIngredientForm.price.$invalid"></span>
+						</div>
+		            </div>
+		            
+		        </div>
+		        <button class="submit-button">SUBMIT</button>
+		        <!-- <button id="menu-button">Return to Menu</button> -->
+		       
+		    </div>
+		</form>
+	</div>
+	<a href="/index" id="menu-button">Return to Menu</a>
+</body>
+</html>

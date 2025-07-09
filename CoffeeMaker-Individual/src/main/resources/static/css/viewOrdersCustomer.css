@@ -1,0 +1,129 @@
+body {
+	background-color: rgb(220, 190, 150);
+	font-family: Arial;
+}
+
+.order {
+    display: flex;
+}
+
+.order-item p {
+    margin: 0;
+}
+
+.order-item {
+    font-size: 14pt;
+    text-wrap: nowrap;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 0;
+    margin: 5px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.order-item:hover {
+    cursor: pointer;
+    border: 2px solid rgba(80, 35, 0, 75%);
+}
+
+.order-list {
+    margin-left: -20px;
+    opacity: 0;
+}
+
+input.order-list:checked + label.order-item {
+    background-color: rgb(80, 35, 0);
+    border: 2px solid rgb(80, 35, 0);
+    color: white; 
+}
+	
+#orderComponent {
+    margin: auto;
+    width: 300px;
+}
+
+#orderLabel {
+    margin: auto;
+    text-align: center;
+    margin-bottom: 15px;
+    background-color: rgb(80, 35, 0);
+    color: white;
+    border-radius: 5px;
+    width: 150px;
+    height: 30px;
+    font-size: 14pt;
+}
+
+#orderContainer {
+	background-color: rgb(255, 255, 255);
+}
+
+#orderContainerHeading {
+	margin:auto;
+    display:flex;
+    flex-direction: row;
+    font-weight: bold;
+}
+
+.orderItem {
+    margin:auto;
+    margin-top:0px;
+    display:flex;
+    flex-direction: row;
+}
+
+.orderTextLeft { 
+    width: 150px;
+    padding-left: 4px;
+    border-right: 2px solid rgb(187, 185, 185);
+    border-bottom: 2px solid rgb(187, 185, 185);
+    text-align: center;
+}
+
+.orderTextRight {
+    width: 150px;
+    padding-left: 4px;
+    border-bottom: 2px solid rgb(187, 185, 185);
+    text-align: center;
+}
+
+button {
+    margin-left: 75px;
+    margin-top: 15px;
+    border-radius: 5px;
+    border-width: 2px;
+    font-size: 20px;
+    width: 150px; 
+    height: 40px;     
+    border: 5px solid  rgb(80, 35, 0);
+    background-color: rgb(136, 60, 1); 
+    border-radius: 15px;
+    color: white;
+}
+
+button:hover {
+    color: #fff;
+    background-color: rgb(80, 35, 0);
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+#returnButton {
+    position: absolute;
+    margin-top: 25vh;
+    right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#returnButton a {
+    text-decoration-line: none;
+    color: white;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
