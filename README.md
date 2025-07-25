@@ -6,3 +6,5 @@
  - Zoe Brentzel (zebrentz)
  - John Nyguen (jdnyuge4)
  - Alex Creech (atcreech)
+ - Kyle Sherk (kpsherk)
+ - Madison Torres (mrtorre3)
